@@ -1,5 +1,5 @@
 ---
-title: "Wavlink Router Firmware Analysis Part 1: Extraction and Initial Reconnaissance"
+title: "Router Firmware Analysis Part 1: Extraction and Initial Reconnaissance"
 date: 2026-08-28
 draft: true
 tags:
@@ -14,9 +14,7 @@ TocOpen: true
 
 ## Introduction
 
-This project explores the firmware of a Wavlink router with the goal of
-better understanding embedded Linux systems and the methodology used
-during firmware security research.
+...
 
 ## Goals
 
@@ -35,6 +33,4 @@ during firmware security research.
 
 ## Initial Analysis
 
-```bash
-file firmware.bin
-binwalk firmware.bin
+...
