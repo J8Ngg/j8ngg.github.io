@@ -1,0 +1,66 @@
+baseURL: "https://j8ngg.github.io/"
+languageCode: en-us
+title: "Jonathan Garcia"
+theme: ["PaperMod"]
+
+enableRobotsTXT: true
+enableEmoji: true
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+params:
+  env: production
+  author: "Jonathan Garcia"
+  description: "Cybersecurity research, reverse engineering, firmware analysis, and technical writeups."
+
+  defaultTheme: dark
+  disableThemeToggle: false
+
+  ShowReadingTime: true
+  ShowBreadCrumbs: true
+  ShowPostNavLinks: true
+  ShowCodeCopyButtons: true
+  ShowToc: true
+  TocOpen: true
+
+  homeInfoParams:
+    Title: "Jonathan Garcia"
+    Content: >
+      Cybersecurity student documenting security research,
+      reverse engineering, firmware analysis, and things
+      I learn along the way.
+
+  socialIcons:
+    - name: github
+      url: "https://github.com/j8ngg"
+
+menu:
+  main:
+    - identifier: posts
+      name: Posts
+      url: /posts/
+      weight: 10
+
+    - identifier: archives
+      name: Archive
+      url: /archives/
+      weight: 20
+
+    - identifier: search
+      name: Search
+      url: /search/
+      weight: 30
+
+    - identifier: tags
+      name: Tags
+      url: /tags/
+      weight: 40
+
+    - identifier: about
+      name: About
+      url: /about/
+      weight: 50
