@@ -7,7 +7,6 @@ tags:
   - reverse-engineering
   - embedded
   - router-security
-  - wavlink
 ShowToc: true
 TocOpen: true
 ---
