@@ -37,6 +37,8 @@ params:
   socialIcons:
     - name: github
       url: "https://github.com/j8ngg"
+    - name: LinkedIn
+      url: "https://www.linkedin.com/in/jonathangarcia1337"
 
 menu:
   main:
