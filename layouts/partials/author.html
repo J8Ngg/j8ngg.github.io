@@ -1,0 +1,61 @@
+{{ $disableImageOptimization := .Site.Params.disableImageOptimization | default false }}
+{{ $authorImage := "" }}
+{{ with .Site.Params.Author.image }}
+  {{ if or (strings.HasPrefix . "http:") (strings.HasPrefix . "https:") }}
+    {{ $authorImage = resources.GetRemote . }}
+  {{ else }}
+    {{ $authorImage = resources.Get . }}
+  {{ end }}
+{{ end }}
+
+<aside class="author author-strip" aria-label="About the author">
+  {{ with $authorImage }}
+    {{ $final := . }}
+    {{ if not (or $disableImageOptimization (eq .MediaType.SubType "svg")) }}
+      {{ $final = .Fit "160x160 webp q90" }}
+    {{ end }}
+    <div class="author-strip__portrait">
+      <img
+        class="nozoom"
+        src="{{ $final.RelPermalink }}"
+        width="64"
+        height="64"
+        alt="{{ $.Site.Params.Author.name | default `Author` }} profile mark"
+        loading="eager"
+        decoding="async">
+    </div>
+  {{ end }}
+
+  <div class="author-strip__content">
+    <div class="author-strip__name">
+      {{ .Site.Params.Author.name | default .Site.Title | markdownify }}
+    </div>
+    {{ with .Site.Params.Author.bio }}
+      <div class="author-strip__bio">{{ . | markdownify }}</div>
+    {{ end }}
+
+    <nav class="author-strip__links" aria-label="Author links">
+      {{ range $links := .Site.Params.Author.links }}
+        {{ range $name, $url := $links }}
+          {{ $isEmail := eq $name "email" }}
+          {{ $label := $name | title }}
+          {{ if eq $name "github" }}{{ $label = "GitHub" }}{{ end }}
+          {{ if eq $name "linkedin" }}{{ $label = "LinkedIn" }}{{ end }}
+          <a
+            class="{{ cond $isEmail `email-link` `` }}"
+            href="{{ cond $isEmail `#` ($url | safeURL) }}"
+            {{ if $isEmail }}data-email="{{ $url | base64Encode }}"{{ end }}
+            target="_blank"
+            rel="me noopener noreferrer">
+            <span aria-hidden="true">{{ partial "icon.html" $name }}</span>
+            <span>{{ $label }}</span>
+          </a>
+        {{ end }}
+      {{ end }}
+      <a class="author-strip__about" href="{{ `/about/` | relLangURL }}">
+        <span>About</span>
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+    </nav>
+  </div>
+</aside>

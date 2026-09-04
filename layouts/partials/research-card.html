@@ -1,0 +1,48 @@
+{{ $page := .page }}
+{{ $variant := .variant | default "default" }}
+{{ $excerptLength := .excerptLength | default 240 }}
+{{ $showDate := $page.Params.showDate | default ($page.Site.Params.article.showDate | default true) }}
+{{ $showReadingTime := and ($page.Params.showReadingTime | default ($page.Site.Params.article.showReadingTime | default true)) (ne $page.ReadingTime 0) }}
+
+{{/* Prefer an intentional front matter summary. Otherwise use the first rendered paragraph,
+  which cleanly skips Markdown headings such as "Introduction". */}}
+{{ $excerpt := $page.Params.description }}
+{{ if not $excerpt }}{{ $excerpt = $page.Params.summary }}{{ end }}
+{{ if not $excerpt }}
+  {{ $paragraphs := findRE `(?s)<p[^>]*>.*?</p>` $page.Content 1 }}
+  {{ with index $paragraphs 0 }}{{ $excerpt = . }}{{ end }}
+{{ end }}
+{{ if not $excerpt }}{{ $excerpt = $page.Plain }}{{ end }}
+{{ $excerpt = strings.TrimSpace ($excerpt | plainify | htmlUnescape) }}
+
+<article class="research-card research-card--{{ $variant }}">
+  <header>
+    <div class="research-card__type">
+      <span>Research note</span>
+      {{ if $page.Draft }}<span class="research-card__draft">Draft</span>{{ end }}
+    </div>
+    <h3>
+      <a href="{{ $page.RelPermalink }}">{{ $page.Title | emojify }}</a>
+    </h3>
+  </header>
+
+  {{ if or $showDate $showReadingTime }}
+    <div class="research-card__meta">
+      {{ if $showDate }}{{ partial "meta/date.html" $page.Date }}{{ end }}
+      {{ if and $showDate $showReadingTime }}<span aria-hidden="true">&middot;</span>{{ end }}
+      {{ if $showReadingTime }}{{ partial "meta/reading-time.html" $page }}{{ end }}
+    </div>
+  {{ end }}
+
+  {{ with $excerpt }}
+    <p class="research-card__summary">{{ . | truncate $excerptLength }}</p>
+  {{ end }}
+
+  {{ with $page.GetTerms "tags" }}
+    <footer class="research-card__tags" aria-label="Article tags">
+      {{ range first 5 . }}
+        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+      {{ end }}
+    </footer>
+  {{ end }}
+</article>

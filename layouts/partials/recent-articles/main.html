@@ -1,0 +1,37 @@
+{{ $recentArticles := .Site.Params.homepage.showRecentItems | default 5 }}
+{{ $showMoreLinkDest := .Site.Params.homepage.showMoreLinkDest | default "/posts/" }}
+
+{{ if .Site.Params.homepage.showRecent | default false }}
+  {{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+  <section class="portfolio-recent" aria-labelledby="recent-research-title">
+    <div class="portfolio-recent__inner">
+      <header class="portfolio-recent__header">
+        <p class="portfolio-section-kicker">Research log</p>
+        <h2 id="recent-research-title">Recent research</h2>
+        <p class="portfolio-recent__subtitle">Notes from firmware analysis, reverse engineering, and security research.</p>
+      </header>
+
+      {{ if gt (len $pages) 0 }}
+        <div class="portfolio-recent__grid">
+          {{ range first $recentArticles $pages }}
+            {{ partial "research-card.html" (dict "page" . "variant" "home" "excerptLength" 240) }}
+          {{ end }}
+        </div>
+
+        {{ if .Site.Params.homepage.showMoreLink | default false }}
+          <div class="portfolio-recent__more">
+            <a href="{{ $showMoreLinkDest | relLangURL }}">
+              View all posts
+              <span aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
+        {{ end }}
+      {{ else }}
+        <div class="portfolio-recent__empty">
+          <span>Research in progress</span>
+          <p>New technical notes and writeups will appear here.</p>
+        </div>
+      {{ end }}
+    </div>
+  </section>
+{{ end }}

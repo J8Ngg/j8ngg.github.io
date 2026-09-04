@@ -8,8 +8,6 @@ tags:
   - embedded
   - router-security
   - tp-link
-ShowToc: true
-TocOpen: true
 ---
 
 ## Introduction

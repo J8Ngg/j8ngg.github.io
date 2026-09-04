@@ -1,0 +1,72 @@
+{{ $author := .Site.Params.Author }}
+{{ $profile := resources.Get $author.image }}
+{{ $profileSmall := $profile }}
+{{ $profileLarge := $profile }}
+{{ with $profile }}
+  {{ $profileSmall = .Resize "320x webp q90" }}
+  {{ $profileLarge = .Resize "480x webp q90" }}
+{{ end }}
+
+<article class="portfolio-hero" aria-labelledby="portfolio-title">
+  <div class="portfolio-hero__visual" aria-hidden="true">
+    <span class="portfolio-hero__grid"></span>
+    <span class="portfolio-hero__shape portfolio-hero__shape--one"></span>
+    <span class="portfolio-hero__shape portfolio-hero__shape--two"></span>
+    <span class="portfolio-hero__shape portfolio-hero__shape--three"></span>
+    <span class="portfolio-hero__shape portfolio-hero__shape--four"></span>
+    <span class="portfolio-hero__trace portfolio-hero__trace--one"></span>
+    <span class="portfolio-hero__trace portfolio-hero__trace--two"></span>
+  </div>
+
+  <div class="portfolio-hero__content">
+    <p class="portfolio-hero__eyebrow">
+      <span aria-hidden="true"></span>
+      Security research portfolio
+    </p>
+
+    {{ with $profile }}
+      <div class="portfolio-hero__portrait">
+        <div class="portfolio-hero__portrait-inner">
+          <img
+            class="nozoom"
+            src="{{ $profileSmall.RelPermalink }}"
+            srcset="{{ $profileSmall.RelPermalink }} 320w, {{ $profileLarge.RelPermalink }} 480w"
+            sizes="(max-width: 640px) 144px, 176px"
+            width="240"
+            height="240"
+            alt="Jonathan Garcia profile mark"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high">
+        </div>
+      </div>
+    {{ end }}
+
+    <h1 id="portfolio-title">{{ $author.name | default .Site.Title }}</h1>
+    {{ with $author.headline }}
+      <div class="portfolio-hero__headline">{{ . | markdownify }}</div>
+    {{ end }}
+
+    {{ with $author.links }}
+      <nav class="portfolio-hero__links" aria-label="Jonathan Garcia on the web">
+        {{ range $links := . }}
+          {{ range $name, $url := $links }}
+            {{ $label := $name | title }}
+            {{ if eq $name "github" }}{{ $label = "GitHub" }}{{ end }}
+            {{ if eq $name "linkedin" }}{{ $label = "LinkedIn" }}{{ end }}
+            <a href="{{ $url | safeURL }}" target="_blank" rel="me noopener noreferrer">
+              <span aria-hidden="true">{{ partial "icon.html" $name }}</span>
+              <span>{{ $label }}</span>
+            </a>
+          {{ end }}
+        {{ end }}
+      </nav>
+    {{ end }}
+
+    {{ with .Content }}
+      <section class="portfolio-hero__body prose prose-invert">{{ . }}</section>
+    {{ end }}
+  </div>
+
+  <div class="portfolio-hero__divider" aria-hidden="true"><span></span></div>
+</article>

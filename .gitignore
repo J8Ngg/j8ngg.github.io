@@ -1,2 +1,4 @@
 public/
 .hugo_build.lock
+hugo.papermod.yaml.bak
+resources/_gen/

@@ -1,0 +1,145 @@
+{{ define "main" }}
+  {{ $author := .Site.Params.Author }}
+  {{ $profile := resources.Get $author.image }}
+  {{ $profileSmall := $profile }}
+  {{ $profileLarge := $profile }}
+  {{ with $profile }}
+    {{ $profileSmall = .Resize "320x webp q90" }}
+    {{ $profileLarge = .Resize "480x webp q90" }}
+  {{ end }}
+  {{ $selected := .Site.GetPage "posts/tp-link-archer-c7-v5-firmware-analysis-part-1" }}
+
+  <article class="about-profile" aria-labelledby="about-title">
+    <header class="about-hero">
+      <div class="about-hero__intro">
+        <p class="portfolio-section-kicker">Personal profile</p>
+        <h1 id="about-title">About Jonathan</h1>
+        <div class="about-hero__copy">{{ .Content }}</div>
+
+        {{ with $author.links }}
+          <nav class="about-social-links" aria-label="Jonathan Garcia on the web">
+            {{ range $links := . }}
+              {{ range $name, $url := $links }}
+                {{ $label := $name | title }}
+                {{ if eq $name "github" }}{{ $label = "GitHub" }}{{ end }}
+                {{ if eq $name "linkedin" }}{{ $label = "LinkedIn" }}{{ end }}
+                <a href="{{ $url | safeURL }}" target="_blank" rel="me noopener noreferrer">
+                  <span aria-hidden="true">{{ partial "icon.html" $name }}</span>
+                  <span>{{ $label }}</span>
+                </a>
+              {{ end }}
+            {{ end }}
+          </nav>
+        {{ end }}
+      </div>
+
+      {{ with $profile }}
+        <div class="about-hero__visual" aria-hidden="true">
+          <div class="about-hero__portrait">
+            <img
+              class="nozoom"
+              src="{{ $profileSmall.RelPermalink }}"
+              srcset="{{ $profileSmall.RelPermalink }} 320w, {{ $profileLarge.RelPermalink }} 480w"
+              sizes="(max-width: 640px) 144px, 208px"
+              width="240"
+              height="240"
+              alt=""
+              loading="eager"
+              decoding="async">
+          </div>
+        </div>
+      {{ end }}
+    </header>
+
+    <section class="about-section" aria-labelledby="work-title">
+      <header class="about-section__header">
+        <p class="portfolio-section-kicker">Focus areas</p>
+        <h2 id="work-title">What I Work On</h2>
+      </header>
+
+      <div class="about-focus-grid">
+        <article class="about-focus-card">
+          <span aria-hidden="true">01</span>
+          <h3>Vulnerability Research</h3>
+          <p>Discovering, analyzing, and understanding security flaws and their real-world impact.</p>
+        </article>
+        <article class="about-focus-card">
+          <span aria-hidden="true">02</span>
+          <h3>Reverse Engineering</h3>
+          <p>Studying binaries, firmware, program behavior, and low-level implementation details.</p>
+        </article>
+        <article class="about-focus-card">
+          <span aria-hidden="true">03</span>
+          <h3>Embedded Security</h3>
+          <p>Examining firmware, routers, exposed services, and embedded attack surfaces.</p>
+        </article>
+        <article class="about-focus-card">
+          <span aria-hidden="true">04</span>
+          <h3>Capture the Flags Competitions</h3>
+          <p>TryHackMe, HackTheBox occasionally, and staying engaged within the US Cyber Games combine/pipeline :)</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="about-currently" aria-labelledby="currently-title">
+      <header>
+        <p class="portfolio-section-kicker">Active focus</p>
+        <h2 id="currently-title">Currently</h2>
+      </header>
+      <div class="about-currently__body">
+        <span class="about-currently__status"><span aria-hidden="true"></span>In progress</span>
+        <p>
+          I’m developing my vulnerability research and reverse engineering skills while working on my
+          {{ with $selected }}
+            <a href="{{ .RelPermalink }}">TP-Link Archer C7 v5 firmware analysis series</a>.
+          {{ else }}
+            <span>TP-Link Archer C7 v5 firmware analysis series</span>.
+          {{ end }}
+        </p>
+      </div>
+    </section>
+
+    <section class="about-section about-selected" aria-labelledby="selected-title">
+      <header class="about-section__header">
+        <p class="portfolio-section-kicker">Research notes</p>
+        <h2 id="selected-title">Selected Work</h2>
+      </header>
+
+      <article class="about-selected-card">
+        {{ if $selected }}
+          <a class="about-selected-card__inner" href="{{ $selected.RelPermalink }}">
+        {{ else }}
+          <div class="about-selected-card__inner">
+        {{ end }}
+          <div class="about-selected-card__content">
+            <div class="about-selected-card__meta">
+              <span>Firmware analysis</span>
+              <span>
+                {{- if $selected -}}
+                  {{ cond $selected.Draft "Draft" "Published" }}
+                {{- else -}}
+                  In progress
+                {{- end -}}
+              </span>
+            </div>
+            <h3>
+              {{ with $selected }}
+                {{ .Title }}
+              {{ else }}
+                TP-Link Archer C7 v5 Firmware Analysis Part 1: Reconnaissance and Firmware Acquisition
+              {{ end }}
+            </h3>
+            <p>A methodical firmware research series covering target reconnaissance, acquisition, validation, and low-level analysis.</p>
+          </div>
+          <div class="about-selected-card__action">
+            {{ if $selected }}Open writeup <span aria-hidden="true">&rarr;</span>{{ else }}Draft writeup{{ end }}
+          </div>
+        {{ if $selected }}
+          </a>
+        {{ else }}
+          </div>
+        {{ end }}
+      </article>
+    </section>
+  </article>
+{{ end }}

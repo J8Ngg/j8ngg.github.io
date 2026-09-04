@@ -1,0 +1,22 @@
+disabled = false
+locale = "en"
+label = "English"
+weight = 1
+title = "Jonathan Garcia"
+
+[params]
+  displayName = "EN"
+  isoCode = "en"
+  rtl = false
+  dateFormat = "January 2, 2006"
+  description = "Cybersecurity research, reverse engineering, firmware analysis, and technical writeups."
+
+[params.author]
+  name = "Jonathan Garcia"
+  image = "img/updated-j8n-pfp.png"
+  headline = "Cybersecurity student documenting security research, reverse engineering, firmware analysis, and things I learn along the way."
+  bio = "Cybersecurity student focused on vulnerability research, reverse engineering, firmware analysis, and ctfs."
+  links = [
+    { github = "https://github.com/j8ngg" },
+    { linkedin = "https://www.linkedin.com/in/jonathangarcia1337" }
+  ]
