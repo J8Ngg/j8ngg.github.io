@@ -1,0 +1,8 @@
+<script>
+  document.documentElement.classList.add("dark");
+  try {
+    window.localStorage.removeItem("appearance");
+  } catch (error) {
+    // Dark mode remains active when browser storage is unavailable.
+  }
+</script>
