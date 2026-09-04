@@ -1,0 +1,31 @@
+{{ define "main" }}
+  <div class="posts-index">
+    <header class="posts-index__header">
+      {{ if .Params.showBreadcrumbs | default (.Site.Params.list.showBreadcrumbs | default false) }}
+        {{ partial "breadcrumbs.html" . }}
+      {{ end }}
+      <p class="portfolio-section-kicker">Research archive</p>
+      <h1>{{ .Title | emojify }}</h1>
+    </header>
+
+    {{ if gt (len .Pages) 0 }}
+      {{ range (.Paginate (.Pages.GroupByDate "2006")).PageGroups }}
+        <section class="posts-index__year" aria-labelledby="posts-year-{{ .Key }}">
+          <h2 id="posts-year-{{ .Key }}" class="posts-index__year-heading">{{ .Key }}</h2>
+          <div class="posts-index__list">
+            {{ range .Pages }}
+              {{ partial "research-card.html" (dict "page" . "variant" "list" "excerptLength" 260) }}
+            {{ end }}
+          </div>
+        </section>
+      {{ end }}
+    {{ else }}
+      <div class="posts-index__empty">
+        <span>Research in progress</span>
+        <p>New technical notes and writeups will appear here.</p>
+      </div>
+    {{ end }}
+
+    {{ partial "pagination.html" . }}
+  </div>
+{{ end }}

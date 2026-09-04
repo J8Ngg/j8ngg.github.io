@@ -1,0 +1,9 @@
+theme = "blowfish"
+baseURL = "https://jonathan-garcia.dev/"
+defaultContentLanguage = "en"
+locale = "en"
+enableRobotsTXT = true
+enableEmoji = true
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
